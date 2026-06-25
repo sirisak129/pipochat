@@ -22,18 +22,22 @@
     <div id="game-container" style="display: none;">
         
         <div id="game-world" onclick="moveCharacter(event)">
+            <!-- ไอคอนปุ่มแชท -->
+            <button id="chat-float-btn" onclick="toggleChat()">💬</button>
             <button id="mission-board-btn" onclick="toggleModal('mission-modal')">📜</button>
             <button id="party-btn" onclick="window.open('party.html', '_blank')">🎧 Party</button>
-            
+        <!-- หน้าต่างแชทลอย -->
+    <div id="chat-modal">
+        <div id="chat-history" style="flex:1; overflow-y:auto; padding:10px;"></div>
+        <div class="chat-input-area" style="display:flex; padding:5px;">
+            <input type="text" id="chat-input" placeholder="พิมพ์..." style="flex:1;">
+            <button onclick="sendChat()">ส่ง</button>
+        </div>
+    </div>
+</div>    
             </div>
 
-        <div id="chat-zone">
-            <div id="chat-history"></div>
-            <div class="chat-input-area">
-                <input type="text" id="chat-input" placeholder="พิมพ์ข้อความที่นี่...">
-                <button onclick="sendChat()">ส่ง</button>
-            </div>
-        </div>
+
 
     </div>
 

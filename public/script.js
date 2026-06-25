@@ -70,7 +70,8 @@ function renderCharacter(playerInfo, isMe) {
     charDiv.style.top = playerInfo.y + "px";
 
     charDiv.innerHTML = `
-        <div class="char-name">${playerInfo.name} ${isMe ? '(คุณ)' : ''}</div>
+        <div class="chat-bubble" id="bubble-${playerInfo.id}"></div>
+        <div class="char-name">${playerInfo.name}</div>
         <div class="char-model">${playerInfo.model}</div>
     `;
     gameWorld.appendChild(charDiv);
@@ -80,18 +81,33 @@ function renderCharacter(playerInfo, isMe) {
 function moveCharacter(event) {
     if(event.target.tagName === 'BUTTON') return;
 
-    const rect = document.getElementById("game-world").getBoundingClientRect();
-    const clickX = event.clientX - rect.left;
-    const clickY = event.clientY - rect.top;
+    const gameWorld = document.getElementById("game-world");
+    const rect = gameWorld.getBoundingClientRect();
+    
+    // คำนวณพิกัดคลิก
+    let clickX = event.clientX - rect.left;
+    let clickY = event.clientY - rect.top;
 
-    // ขยับตัวเราเองก่อนเพื่อให้การแสดงผลลื่นไหลไม่ดีเลย์
+    // --- ส่วนจำกัดไม่ให้เดินหลุดขอบ (Clamp) ---
+    // กว้างและสูงของจอเกม
+    const worldWidth = rect.width;
+    const worldHeight = rect.height;
+
+    // ถ้าตัวละครกว้าง/สูง 50px ให้เผื่อขอบไว้ด้วย
+    clickX = Math.max(25, Math.min(clickX, worldWidth - 25));
+    clickY = Math.max(25, Math.min(clickY, worldHeight - 25));
+    // --------------------------------------
+
+    // อัปเดตตำแหน่ง
+    myPlayer.x = clickX;
+    myPlayer.y = clickY;
+    
     const myCharDiv = document.getElementById(myId);
     if (myCharDiv) {
         myCharDiv.style.left = clickX + "px";
         myCharDiv.style.top = clickY + "px";
     }
 
-    // [ออนไลน์] ส่งพิกัดใหม่ไปบอกเซิร์ฟเวอร์เพื่อให้เซิร์ฟเวอร์ยิงไปบอกเครื่องเพื่อนๆ
     socket.emit('player-movement', { x: clickX, y: clickY });
 }
 
@@ -108,9 +124,22 @@ function sendChat() {
 
 // [ออนไลน์] รอรับข้อความแชทจากเซิร์ฟเวอร์แล้วนำมาแสดงบนกล่องแชท
 socket.on('receive-chat', (data) => {
+// 1. แสดงในแชทปกติ
     const history = document.getElementById("chat-history");
     history.innerHTML += `<p><strong>${data.name}:</strong> ${data.message}</p>`;
     history.scrollTop = history.scrollHeight;
+
+// 2. แสดงบนหัวตัวละคร
+    const bubble = document.getElementById(`bubble-${data.playerId}`);
+    if (bubble) {
+        bubble.innerText = data.message;
+        bubble.classList.add('show');
+
+        // ซ่อนอัตโนมัติใน 3 วินาที
+        setTimeout(() => {
+            bubble.classList.remove('show');
+        }, 3000);
+    }
 });
 
 function toggleModal(modalId) {
@@ -128,3 +157,20 @@ function submitPost() {
     alert("โพสต์สำเร็จ! (ระบบจำลองบอร์ด)");
     toggleModal('new-post-modal');
 }
+
+function toggleChat() {
+    const chatModal = document.getElementById("chat-modal");
+    if (chatModal.style.display === "none" || chatModal.style.display === "") {
+        chatModal.style.display = "flex";
+    } else {
+        chatModal.style.display = "none";
+    }
+}
+
+// เมื่อมีการคลิกที่ช่องพิมพ์ ให้บังคับให้หน้าจอเลื่อนไปจุดนั้น
+const chatInput = document.getElementById('chat-input');
+chatInput.addEventListener('focus', () => {
+    setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+    }, 300);
+});

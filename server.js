@@ -48,13 +48,13 @@ io.on('connection', (socket) => {
     });
 
     // จุดที่ 3: เมื่อมีคนส่งข้อความแชท
-    socket.on('send-chat', (chatData) => {
-        // ส่งข้อความกระจายให้ทุกคนในเกมเห็นพร้อมกัน (รวมถึงตัวเราเองด้วย)
-        io.emit('receive-chat', {
-            name: chatData.name,
-            message: chatData.message
-        });
+socket.on('send-chat', (chatData) => {
+    io.emit('receive-chat', {
+        playerId: socket.id, // ต้องส่ง ID กลับไป
+        name: chatData.name,
+        message: chatData.message
     });
+});
 
     // จุดที่ 4: เมื่อมีผู้เล่นปิดหน้าเว็บไป (ออกจากเกม)
     socket.on('disconnect', () => {
