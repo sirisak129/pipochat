@@ -27,11 +27,11 @@
             <button id="mission-board-btn" onclick="toggleModal('mission-modal')">📜</button>
             <button id="party-btn" onclick="window.open('party.html', '_blank')">🎧 Party</button>
         <!-- หน้าต่างแชทลอย -->
-    <div id="chat-modal">
-        <div id="chat-history" style="flex:1; overflow-y:auto; padding:10px;"></div>
-        <div class="chat-input-area" style="display:flex; padding:5px;">
-            <input type="text" id="chat-input" placeholder="พิมพ์..." style="flex:1;">
-            <button onclick="sendChat()">ส่ง</button>
+    <div id="chat-modal" onclick="event.stopPropagation()">
+        <div id="chat-history"></div>
+        <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="พิมพ์..." onclick="event.stopPropagation()">
+        <button onclick="sendChat(event)">ส่ง</button>
         </div>
     </div>
 </div>    
