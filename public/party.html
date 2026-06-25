@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Party Room</title>
+    <style>
+        body { font-family: sans-serif; background: #2c3e50; color: white; padding: 20px; text-align: center; }
+        .room-container { background: #34495e; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto; }
+        
+        .host-area { margin-bottom: 20px; border-bottom: 2px solid #7f8c8d; padding-bottom: 10px; }
+        
+        /* ช่องไมค์ 10 ช่อง แถวละ 5 */
+        .mic-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+        .mic-slot { background: #16a085; height: 80px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border: 2px dashed #ecf0f1;}
+        .mic-slot:hover { background: #1abc9c; }
+        
+        .chat-area { background: white; color: black; height: 150px; border-radius: 5px; padding: 10px; text-align: left; overflow-y: auto; margin-bottom: 10px; }
+        .btn-mic { background: #e74c3c; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+    <div class="room-container">
+        <h2>ปาร์ตี้ตีบอส (Public)</h2>
+        
+        <div class="host-area">
+            <h3>👑 Host: Catsunblack 🐱</h3>
+        </div>
+
+        <h4>ช่องเวที (จิ้มเพื่อขึ้นไมค์)</h4>
+        <div class="mic-grid">
+            <div class="mic-slot">ว่าง</div>
+            <div class="mic-slot">ว่าง</div>
+            <div class="mic-slot">ว่าง</div>
+            <div class="mic-slot">ว่าง</div>
+            <div class="mic-slot">ว่าง</div>
+            <div class="mic-slot">ว่าง</div>
+            <div class="mic-slot">ว่าง</div>
+            <div class="mic-slot">ว่าง</div>
+            <div class="mic-slot">ว่าง</div>
+            <div class="mic-slot">ว่าง</div>
+        </div>
+
+        <button class="btn-mic">เปิด/ปิด ไมค์ 🎙️</button>
+
+        <h4 style="margin-top: 20px; text-align: left;">แชทปาร์ตี้</h4>
+        <div class="chat-area">
+            <p><strong>ผู้เล่น A:</strong> ได้ยินเสียงผมไหมครับ?</p>
+        </div>
+    </div>
+</body>
+</html>

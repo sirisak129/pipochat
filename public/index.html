@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Web RPG Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-screen">
+        <h2>สร้างตัวละครของคุณ</h2>
+        <input type="text" id="username" placeholder="ตั้งชื่อตัวละคร..." maxlength="15">
+        <div class="avatar-selection">
+            <button class="avatar-btn" onclick="selectAvatar('🐱')">🐱 แมว</button>
+            <button class="avatar-btn" onclick="selectAvatar('🐶')">🐶 หมา</button>
+            <button class="avatar-btn" onclick="selectAvatar('🐰')">🐰 กระต่าย</button>
+        </div>
+        <button id="enter-game-btn" onclick="enterGame()">เข้าสู่โลก!</button>
+    </div>
+
+    <div id="game-container" style="display: none;">
+        
+        <div id="game-world" onclick="moveCharacter(event)">
+            <button id="mission-board-btn" onclick="toggleModal('mission-modal')">📜</button>
+            <button id="party-btn" onclick="window.open('party.html', '_blank')">🎧 Party</button>
+            
+            </div>
+
+        <div id="chat-zone">
+            <div id="chat-history"></div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="พิมพ์ข้อความที่นี่...">
+                <button onclick="sendChat()">ส่ง</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="mission-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleModal('mission-modal')">✖</span>
+            <h2>กระดานข้อความ (Anonymous)</h2>
+            <button onclick="toggleModal('new-post-modal')">+ สร้างโพสต์ใหม่</button>
+            <div id="board-posts">
+                <div class="post-card">
+                    <p>มีใครล่าบอสสไลม์บ้างไหม? ขอตี้หน่อย!</p>
+                    <div class="post-actions">
+                        <span>💬 2 คอมเมนต์</span>
+                        <span>🔓 Public</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="new-post-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleModal('new-post-modal')">✖</span>
+            <h2>สร้างโพสต์ (ไม่ระบุตัวตน)</h2>
+            <textarea id="post-text" maxlength="400" placeholder="พิมพ์ข้อความ... (สูงสุด 400 ตัวอักษร)"></textarea>
+            <select id="post-privacy">
+                <option value="public">🌍 ทั่วไป (Public)</option>
+                <option value="private">🔒 ส่วนตัว (Private - เลือกเฉพาะคน)</option>
+            </select>
+            <button onclick="submitPost()">โพสต์เลย!</button>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
