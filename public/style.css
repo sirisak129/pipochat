@@ -34,7 +34,7 @@ body, html {
 
 #chat-float-btn {
     position: absolute;
-    top: calc(100vh - 80px); /* 100vh ลบความสูงปุ่ม+ระยะห่าง */
+    top: calc(100vh - 400px); /* 100vh ลบความสูงปุ่ม+ระยะห่าง */
     right: 20px;
     width: 60px;
     height: 60px;
@@ -152,4 +152,32 @@ textarea { width: 100%; height: 100px; margin: 10px 0; padding: 10px; }
 /* ตอนแชทแสดง ให้โชว์ Overlay ออกมาด้วย */
 #chat-overlay.show {
     display: block;
+}
+
+/* สไตล์ตอนถูกเลือก */
+.avatar-btn {
+    padding: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* ใส่สีและเงาเวลาโดนเลือก */
+.avatar-btn.selected {
+    background-color: #f1c40f; /* สีเหลืองทอง */
+    box-shadow: 0 0 10px #f39c12; /* ออร่าเรืองแสง */
+    transform: scale(2.1); /* ขยายใหญ่ขึ้นนิดนึง */
+}
+
+.emoji-item {
+    display: inline-block; /* ต้องมีเพื่อให้ scale ได้ */
+    padding: 5px;
+    cursor: pointer;
+    font-size: 20px; /* ขนาดปกติ */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* ทำแอนิเมชันให้เด้งๆ นุ่มนวล */
+}
+
+/* คลาสสำหรับตัวที่ถูกเลือก: ให้ใหญ่ขึ้น 2 เท่า */
+.emoji-item.selected {
+    transform: scale(2.0); 
 }

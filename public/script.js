@@ -8,7 +8,7 @@ let myPlayer = {
 
 function selectAvatar(model) {
     myPlayer.model = model;
-    alert("เลือกอวาตาร์: " + model);
+    
 }
 
 function enterGame() {
@@ -189,6 +189,23 @@ function toggleChat() {
     } else {
         chatModal.style.display = "none";
     }
+}
+
+function selectModel(element, model) {
+    // 1. เคลียร์คลาส 'selected' จากทุกตัวที่เคยเลือกไว้
+    const allItems = document.querySelectorAll('.emoji-item');
+    allItems.forEach(el => el.classList.remove('selected'));
+
+    // 2. ใส่คลาส 'selected' ให้ตัวที่เพิ่งกด (ซึ่ง CSS จะสั่งขยายขนาดให้เอง)
+    element.classList.add('selected');
+
+    // 3. Logic อัปเดตตัวละครของคุณ (ตามเดิมที่เคยทำไว้)
+    myPlayer.model = model;
+    const myChar = document.getElementById(myId);
+    if(myChar) {
+        myChar.querySelector('.char-model').innerText = model;
+    }
+    socket.emit('change-model', model);
 }
 
 // เมื่อมีการคลิกที่ช่องพิมพ์ ให้บังคับให้หน้าจอเลื่อนไปจุดนั้น
