@@ -117,18 +117,20 @@ function toggleChat(event) {
 
     const chatModal = document.getElementById("chat-modal");
     const chatOverlay = document.getElementById("chat-overlay");
+    const chatBtn = document.getElementById("chat-float-btn");
 
-    // ตรวจสอบสถานะ
     const isShowing = chatModal.style.display === "flex";
 
     if (!isShowing) {
-        // ถ้าจะเปิด
+        // เปิดแชท
         chatModal.style.display = "flex";
         chatOverlay.classList.add('show');
+        chatBtn.classList.add('active'); // เลื่อนปุ่มขึ้น
     } else {
-        // ถ้าจะปิด
+        // ปิดแชท
         chatModal.style.display = "none";
         chatOverlay.classList.remove('show');
+        chatBtn.classList.remove('active'); // เลื่อนปุ่มลง
     }
 }
 

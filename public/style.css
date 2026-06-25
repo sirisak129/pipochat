@@ -32,20 +32,24 @@ body, html {
     overflow: hidden;
 }
 
-/* ปุ่มแชทลอย ขวาล่าง */
 #chat-float-btn {
     position: absolute;
-    bottom: 20px;
+    top: calc(100vh - 80px); /* 100vh ลบความสูงปุ่ม+ระยะห่าง */
     right: 20px;
     width: 60px;
     height: 60px;
     background: #3498db;
     border-radius: 50%;
-    color: white;
-    font-size: 30px;
+    z-index: 7000;
     border: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    z-index: 1000;
+    font-size: 25px;
+    transition: bottom 0.3s ease; /* เน้นแค่ bottom */
+}
+
+/* บังคับตำแหน่งใหม่ */
+#chat-float-btn.active {
+    top: calc(60vh - 80px) !important; /* 100vh ลบ 40vh แชท ก็จะเหลือ 60vh */ 
+    background: #e67e22 !important;
 }
 
 /* กล่องแชทที่จะเด้งขึ้นมา */
@@ -59,7 +63,7 @@ body, html {
     border-radius: 15px;
     display: none; /* ซ่อนไว้ก่อน */
     flex-direction: column;
-    z-index: 1001;
+    z-index: 6001;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
