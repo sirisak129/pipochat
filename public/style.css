@@ -133,3 +133,19 @@ textarea { width: 100%; height: 100px; margin: 10px 0; padding: 10px; }
 .chat-bubble.show {
     opacity: 1;
 }
+
+/* กำแพงดักทัช */
+#chat-overlay {
+    display: none; /* ซ่อนไว้ก่อน */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000; /* อยู่ต่ำกว่า chat-modal (ซึ่งควรจะ z-index 1001) */
+}
+
+/* ตอนแชทแสดง ให้โชว์ Overlay ออกมาด้วย */
+#chat-overlay.show {
+    display: block;
+}

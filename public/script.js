@@ -113,9 +113,23 @@ function moveCharacter(event) {
 
 // 1. แก้ฟังก์ชัน toggleChat (ตอนกดปุ่มเปิดแชท)
 function toggleChat(event) {
-    if (event) event.stopPropagation(); // หยุดการส่งต่อเหตุการณ์
+    if (event) event.stopPropagation();
+
     const chatModal = document.getElementById("chat-modal");
-    chatModal.classList.toggle('show');
+    const chatOverlay = document.getElementById("chat-overlay");
+
+    // ตรวจสอบสถานะ
+    const isShowing = chatModal.style.display === "flex";
+
+    if (!isShowing) {
+        // ถ้าจะเปิด
+        chatModal.style.display = "flex";
+        chatOverlay.classList.add('show');
+    } else {
+        // ถ้าจะปิด
+        chatModal.style.display = "none";
+        chatOverlay.classList.remove('show');
+    }
 }
 
 // ระบบแชทแบบเรียลไทม์
