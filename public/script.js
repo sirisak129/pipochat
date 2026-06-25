@@ -38,6 +38,17 @@ socket.on('current-players', (players) => {
     });
 });
 
+// ใน server.js
+io.on('connection', (socket) => {
+    
+    // ต้องมีส่วนนี้
+    socket.on('new-post', (data) => {
+        console.log("Server ได้รับโพสต์แล้ว:", data); // ดูใน Terminal/Log ของ Render
+        io.emit('update-feed', data); // กระจายให้ทุกคน
+    });
+
+});
+
 // [ออนไลน์] เมื่อมีเพื่อนคนอื่นเพิ่งเข้าเกมตามมาทีหลัง
 socket.on('new-player', (playerInfo) => {
     renderCharacter(playerInfo, false);
@@ -186,17 +197,27 @@ function toggleModal(modalId) {
     }
 }
 
+// ใน script.js (ใส่ไว้ข้างนอกฟังก์ชัน)
+document.getElementById('submit-post-btn').addEventListener('click', submitPost);
+
 // ส่งโพสต์ไป Server
 function submitPost() {
     const text = document.getElementById('post-text').value;
-    // (ถ้ามีรูป ต้องแปลงเป็น base64 หรือส่ง Link ก่อน)
     
+    console.log("กำลังส่งโพสต์..."); // เช็คว่าปุ่มทำงานไหม
+    
+    if (!text) {
+        alert("กรุณาพิมพ์ข้อความก่อนครับ!");
+        return;
+    }
+
     socket.emit('new-post', {
         text: text,
         timestamp: Date.now()
     });
     
-    document.getElementById('post-text').value = ''; // ล้างช่องพิมพ์
+    console.log("ส่งข้อมูลไป Server แล้ว!");
+    document.getElementById('post-text').value = ''; 
 }
 
 function showTempImage(btn, imageUrl) {
