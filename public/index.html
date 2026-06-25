@@ -43,7 +43,7 @@
             <!-- ไอคอนปุ่มแชท -->
             <button id="chat-float-btn" onclick="toggleChat(event)">💬</button>
             <div id="chat-overlay" onclick="toggleChat(event)"></div>
-            <button id="mission-board-btn" onclick="toggleModal('mission-modal')">📜</button>
+            <button id="mission-board-btn" onclick="toggleModal('post-input-zone')">📜</button>
             <button id="party-btn" onclick="window.open('party.html', '_blank')">🎧 Party</button>
         <!-- หน้าต่างแชทลอย -->
     <div id="chat-modal" onclick="event.stopPropagation()">
@@ -60,36 +60,61 @@
 
     </div>
 
-    <div id="mission-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-btn" onclick="toggleModal('mission-modal')">✖</span>
-            <h2>กระดานข้อความ (Anonymous)</h2>
-            <button onclick="toggleModal('new-post-modal')">+ สร้างโพสต์ใหม่</button>
-            <div id="board-posts">
-                <div class="post-card">
-                    <p>มีใครล่าบอสสไลม์บ้างไหม? ขอตี้หน่อย!</p>
-                    <div class="post-actions">
-                        <span>💬 2 คอมเมนต์</span>
-                        <span>🔓 Public</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div id="new-post-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-btn" onclick="toggleModal('new-post-modal')">✖</span>
-            <h2>สร้างโพสต์ (ไม่ระบุตัวตน)</h2>
-            <textarea id="post-text" maxlength="400" placeholder="พิมพ์ข้อความ... (สูงสุด 400 ตัวอักษร)"></textarea>
-            <select id="post-privacy">
-                <option value="public">🌍 ทั่วไป (Public)</option>
-                <option value="private">🔒 ส่วนตัว (Private - เลือกเฉพาะคน)</option>
-            </select>
-            <button onclick="submitPost()">โพสต์เลย!</button>
-        </div>
-    </div>
+
+<div id="post-input-zone">
+    <textarea id="post-text" maxlength="400" placeholder="พิมพ์ข้อความ..."></textarea>
+    <input type="file" id="image-input" accept="image/*">
+    <button onclick="createPost()">โพสต์</button>
+</div>
+<div id="board-container"></div> ```
+
+### 3. Logic การแสดงผลโพสต์และการซ่อนรูป (JavaScript)
+ใน `script.js` เมื่อได้รับโพสต์จาก Socket ให้สร้าง `div` ของโพสต์นั้นๆ:
+
+```javascript
+function renderPost(post) {
+    const postDiv = document.createElement('div');
+    postDiv.className = "post-card"; // สำหรับทำกรอบแยกแต่ละโพสต์
+    postDiv.innerHTML = `
+        <p>${post.content}</p>
+        ${post.image ? `<button onclick="showImage(this, '${post.image}')">ดูรูปภาพ</button>` : ''}
+        <div class="comments-section"></div>
+        <input type="text" placeholder="Anonymous comment..." onkeydown="addComment(event, '${post.id}')">
+    `;
+    document.getElementById('board-container').appendChild(postDiv);
+}
+
+// ฟังก์ชันแสดงรูป 10 วิ
+function showImage(btn, imageUrl) {
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    btn.parentNode.appendChild(img);
+    setTimeout(() => img.remove(), 10000); // หายใน 10 วิ
+}
+
+
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
+
+
+    <div id="post-input-zone" class="modal">
+    <div class="modal-header">
+        <h2>กระดานข่าวสาร</h2>
+        <button onclick="toggleModal('post-input-zone')">ปิด</button>
+    </div>
+
+    <div class="create-post-box">
+        <textarea id="post-text" maxlength="400" placeholder="พิมพ์ข้อความที่นี่... (สูงสุด 400 ตัวอักษร)"></textarea>
+        <input type="file" id="image-upload" accept="image/*">
+        <button onclick="submitPost()">โพสต์เลย!</button>
+    </div>
+
+    <div id="board-container">
+        </div>
+</div>
+
+
 </body>
 </html>

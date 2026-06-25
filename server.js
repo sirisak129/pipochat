@@ -9,6 +9,13 @@ const io = new Server(server, {
     cors: { origin: "*" } // อนุญาตให้เชื่อมต่อได้จากทุกอุปกรณ์
 });
 
+let posts = []; // เก็บ { id, author, content, image, comments: [] }
+socket.on('new-post', (data) => {
+    const post = { id: Date.now(), ...data };
+    io.emit('update-feed', post); // ส่งให้ทุกคนที่ออนไลน์
+});
+
+
 // สั่งให้ Server ดึงไฟล์หน้าเว็บจากโฟลเดอร์ public มาแสดงผล
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -69,3 +76,4 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`🚀 เกมออนไลน์ของคุณทำงานแล้วที่พอร์ต http://localhost:${PORT}`);
 });
+

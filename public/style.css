@@ -111,10 +111,48 @@ body, html {
 .char-model { font-size: 32px; } /* ขนาดอีโมจิสัตว์ */
 
 /* หน้าต่าง Modal (ป็อปอัพ) */
-.modal { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 100; }
-.modal-content { background: white; width: 90%; max-height: 80%; border-radius: 10px; padding: 20px; position: relative; overflow-y: auto; }
+.modal { display: none; background: #f0f2f5; overflow-y: auto; }
+.modal.show { display: block !important; }
+
+/* ค่าเริ่มต้น: ซ่อนไว้ */
+#post-input-zone {
+    display: none; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    height: 80vh;
+    background: white;
+    z-index: 9999; /* ให้ลอยเหนือทุกอย่าง */
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+
+/* คลาสที่ใช้สั่งเปิด */
+#post-input-zone.show {
+    display: block !important;
+}
 .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #c0392b; }
-.post-card { border: 1px solid #ddd; padding: 10px; margin-top: 10px; border-radius: 5px; background: #f9f9f9; }
+.post-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.comment-icon { color: #65676b; cursor: pointer; margin-top: 10px; display: block; }
+#board-container { padding: 10px; }
+
+.comments-section {
+    border-top: 1px dashed #ccc;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
 .post-actions { display: flex; justify-content: space-between; font-size: 12px; color: #7f8c8d; margin-top: 10px; }
 textarea { width: 100%; height: 100px; margin: 10px 0; padding: 10px; }
 .chat-bubble {

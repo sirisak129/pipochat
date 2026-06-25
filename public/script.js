@@ -134,6 +134,17 @@ function toggleChat(event) {
     }
 }
 
+function toggleModal(elementId) {
+    const modal = document.getElementById(elementId);
+    if (!modal) {
+        console.error("หา ID ไม่เจอ: " + elementId);
+        return;
+    }
+    
+    // สลับคลาส 'show'
+    modal.classList.toggle('show');
+}
+
 // ระบบแชทแบบเรียลไทม์
 function sendChat() {
     if (event) event.stopPropagation(); // หยุดการส่งต่อเหตุการณ์
@@ -175,12 +186,44 @@ function toggleModal(modalId) {
     }
 }
 
+// ส่งโพสต์ไป Server
 function submitPost() {
-    const text = document.getElementById("post-text").value;
-    if(text.trim() === "") return;
-    alert("โพสต์สำเร็จ! (ระบบจำลองบอร์ด)");
-    toggleModal('new-post-modal');
+    const text = document.getElementById('post-text').value;
+    // (ถ้ามีรูป ต้องแปลงเป็น base64 หรือส่ง Link ก่อน)
+    
+    socket.emit('new-post', {
+        text: text,
+        timestamp: Date.now()
+    });
+    
+    document.getElementById('post-text').value = ''; // ล้างช่องพิมพ์
 }
+
+function showTempImage(btn, imageUrl) {
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.style.width = "100%";
+    btn.parentNode.appendChild(img);
+    
+    // ลบรูปทิ้งใน 10 วินาที
+    setTimeout(() => {
+        img.remove();
+    }, 10000);
+}
+
+// รับโพสต์จาก Server แล้วแปะลง Feed
+socket.on('update-feed', (post) => {
+    const container = document.getElementById('board-container');
+    const postHTML = `
+        <div class="post-card">
+            <p>${post.text}</p>
+            ${post.image ? `<button onclick="showTempImage(this, '${post.image}')">ดูรูปภาพ (10วิ)</button>` : ''}
+            <span class="comment-icon" onclick="openComments('${post.id}')">💬 คอมเมนต์</span>
+            <div id="comment-area-${post.id}"></div>
+        </div>
+    `;
+    container.insertAdjacentHTML('afterbegin', postHTML); // โพสต์ใหม่ขึ้นบนสุด
+});
 
 function toggleChat() {
     const chatModal = document.getElementById("chat-modal");
