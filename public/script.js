@@ -111,8 +111,16 @@ function moveCharacter(event) {
     socket.emit('player-movement', { x: clickX, y: clickY });
 }
 
+// 1. แก้ฟังก์ชัน toggleChat (ตอนกดปุ่มเปิดแชท)
+function toggleChat(event) {
+    if (event) event.stopPropagation(); // หยุดการส่งต่อเหตุการณ์
+    const chatModal = document.getElementById("chat-modal");
+    chatModal.classList.toggle('show');
+}
+
 // ระบบแชทแบบเรียลไทม์
 function sendChat() {
+    if (event) event.stopPropagation(); // หยุดการส่งต่อเหตุการณ์
     const input = document.getElementById("chat-input");
     const message = input.value.trim();
     if(message !== "") {
