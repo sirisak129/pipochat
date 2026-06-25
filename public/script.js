@@ -1,5 +1,6 @@
 const socket = io(); // เปิดการเชื่อมต่อออนไลน์กับระบบหลังบ้าน
 
+
 let myId = null;
 let myPlayer = {
     name: "",
@@ -198,7 +199,17 @@ function toggleModal(modalId) {
 }
 
 // ใน script.js (ใส่ไว้ข้างนอกฟังก์ชัน)
-document.getElementById('submit-post-btn').addEventListener('click', submitPost);
+document.getElementById('submit-post-btn').addEventListener('click', () => {
+    const text = document.getElementById('post-text').value;
+    if (!text) {
+        alert("กรุณาพิมพ์ข้อความ");
+        return;
+    }
+    socket.emit('new-post', { text: text });
+    document.getElementById('post-text').value = '';
+    console.log("ส่งข้อมูลไปแล้ว!"); 
+});
+
 
 // ส่งโพสต์ไป Server
 function submitPost() {
@@ -234,16 +245,13 @@ function showTempImage(btn, imageUrl) {
 
 // รับโพสต์จาก Server แล้วแปะลง Feed
 socket.on('update-feed', (post) => {
+    console.log("ได้รับโพสต์จากเซิร์ฟเวอร์:", post); // เช็คใน F12 ว่ามันมาถึงไหม
+    
     const container = document.getElementById('board-container');
-    const postHTML = `
-        <div class="post-card">
-            <p>${post.text}</p>
-            ${post.image ? `<button onclick="showTempImage(this, '${post.image}')">ดูรูปภาพ (10วิ)</button>` : ''}
-            <span class="comment-icon" onclick="openComments('${post.id}')">💬 คอมเมนต์</span>
-            <div id="comment-area-${post.id}"></div>
-        </div>
-    `;
-    container.insertAdjacentHTML('afterbegin', postHTML); // โพสต์ใหม่ขึ้นบนสุด
+    const newPost = document.createElement('div');
+    newPost.className = "post-card";
+    newPost.innerHTML = `<p>${post.text}</p>`;
+    container.prepend(newPost); // แปะโพสต์ใหม่ไว้บนสุด
 });
 
 function toggleChat() {
@@ -271,6 +279,44 @@ function selectModel(element, model) {
     }
     socket.emit('change-model', model);
 }
+
+
+function createPost() {
+    const text = document.getElementById('post-text').value.trim();
+    if (!text) {
+        alert("พิมพ์ก่อนโพสต์น้า!");
+        return;
+    }
+
+    // 1. ส่งข้อมูลไป Server
+    socket.emit('new-post', { text: text });
+    
+    // 2. ล้างค่าช่องพิมพ์
+    document.getElementById('post-text').value = '';
+    
+    // 3. แสดง Feedback เล็กๆ
+    alert("โพสต์สำเร็จแล้ว!");
+}
+
+function toggleModal(id) {
+    const modal = document.getElementById(id);
+    
+    if (!modal) {
+        alert("ไม่พบกล่องโพสต์ (เช็ค ID ให้ดี!)");
+        return;
+    }
+
+    // ถ้าซ่อนอยู่ ให้แสดงผล
+    if (modal.style.display === "none" || modal.style.display === "") {
+        modal.style.display = "block";
+        console.log("กล่องเปิดแล้ว!");
+    } else {
+        // ถ้าแสดงอยู่ ให้ซ่อน
+        modal.style.display = "none";
+        console.log("กล่องปิดแล้ว!");
+    }
+}
+
 
 // เมื่อมีการคลิกที่ช่องพิมพ์ ให้บังคับให้หน้าจอเลื่อนไปจุดนั้น
 const chatInput = document.getElementById('chat-input');

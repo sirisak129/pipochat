@@ -116,19 +116,46 @@ body, html {
 
 /* ค่าเริ่มต้น: ซ่อนไว้ */
 #post-input-zone {
-    display: none; 
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90vw;
-    height: 80vh;
-    background: white;
-    z-index: 9999; /* ให้ลอยเหนือทุกอย่าง */
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    resize: none;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.input-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#post-submit-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 20px;
     border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    overflow-y: auto;
+    font-weight: bold;
+}
+
+.file-label {
+    cursor: pointer;
+    background: #eee;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
 }
 
 /* คลาสที่ใช้สั่งเปิด */

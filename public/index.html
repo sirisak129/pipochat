@@ -61,13 +61,20 @@
     </div>
 
 
-
-<div id="post-input-zone">
-    <textarea id="post-text" maxlength="400" placeholder="พิมพ์ข้อความ..."></textarea>
-    <input type="file" id="image-input" accept="image/*">
-    <button onclick="createPost()">โพสต์</button>
+<div id="post-input-zone" class="modal-content">
+    <div class="input-header">สร้างโพสต์ใหม่</div>
+    <textarea id="post-text" maxlength="400" placeholder="มีอะไรจะแชร์ไหม..."></textarea>
+    
+    <div class="input-actions">
+        <label for="image-input" class="file-label">📸 เลือกรูป</label>
+        <input type="file" id="image-input" accept="image/*" style="display:none;">
+        
+        <button id="post-submit-btn" onclick="createPost()">โพสต์เลย</button>
+    </div>
 </div>
-<div id="board-container"></div> ```
+
+<div id="board-container">
+    </div>
 
 ### 3. Logic การแสดงผลโพสต์และการซ่อนรูป (JavaScript)
 ใน `script.js` เมื่อได้รับโพสต์จาก Socket ให้สร้าง `div` ของโพสต์นั้นๆ:
@@ -99,17 +106,6 @@ function showImage(btn, imageUrl) {
     <script src="script.js"></script>
 
 
-    <div id="post-input-zone" class="modal">
-    <div class="modal-header">
-        <h2>กระดานข่าวสาร</h2>
-        <button onclick="toggleModal('post-input-zone')">ปิด</button>
-    </div>
-
-    <div class="create-post-box">
-        <textarea id="post-text" maxlength="400" placeholder="พิมพ์ข้อความที่นี่... (สูงสุด 400 ตัวอักษร)"></textarea>
-        <input type="file" id="image-upload" accept="image/*">
-        <button onclick="submitPost()">โพสต์เลย!</button>
-    </div>
 
     <div id="board-container">
         </div>
